@@ -1,22 +1,19 @@
 import { SET_PRODUCTS } from './productsTypes';
 
 const initialState = {
-    PRODUCTS: [],
+  PRODUCTS: [],
 };
 
 const productReducer = (state = initialState, action) => {
-    //console.log(action.payload)
-    //console.log("********************************************")
-    switch (action.type) {
-        case SET_PRODUCTS : {
-            return {
-                ...state,
-                PRODUCTS: action.payload,
-            }
-        }
-        default:
-            return state;
-    }
-};
+  switch (action.type) {
+    case SET_PRODUCTS:
+      return {
+        ...state,
+        PRODUCTS: action.payload,
+      };
+    default:
+      return state;
 
-export default productReducer;
+  }
+};
+export default productReducer;
