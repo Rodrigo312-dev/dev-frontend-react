@@ -1,19 +1,28 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SearchBar from './Product/_components/SearchBar';
 import ProductTable from './Product/_components/ProductTable';
-
-const PRODUCTS = [
-    { category: "Fruits", price: "$1", stocked: true, name: "Apple" },
-    { category: "Fruits", price: "$1", stocked: true, name: "Dragonfruit" },
-    { category: "Fruits", price: "$2", stocked: false, name: "Passionfruit" },
-    { category: "Vegetables", price: "$2", stocked: true, name: "Spinach" },
-    { category: "Vegetables", price: "$4", stocked: false, name: "Pumpkin" },
-    { category: "Vegetables", price: "$1", stocked: true, name: "Peas" }
-];
-
+import { useSelector, useDispatch } from 'react-redux';
+import { setProducts } from '../redux/products/productsActions';
 
 const Producto = () => {
-    // FilterableProductTable: Contiene toda la App
+    const products = useSelector((state) => state.products || []);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(
+            setProducts([
+                { category: "Fruits", price: "$1", stocked: true, name: "Apple" },
+                { category: "Fruits", price: "$1", stocked: true, name: "Dragonfruit" },
+                { category: "Fruits", price: "$2", stocked: false, name: "Passionfruit" },
+                { category: "Vegetables", price: "$2", stocked: true, name: "Spinach" },
+                { category: "Vegetables", price: "$4", stocked: false, name: "Pumpkin" },
+                { category: "Vegetables", price: "$1", stocked: true, name: "Peas" }
+            ])
+        );
+        console.log("Productos inicializados:", products);
+    }, [dispatch]);
+
+
     const [filterText, setFilterText] = useState('');
     const [inStockOnly, setInStockOnly] = useState(false);
 
@@ -25,7 +34,7 @@ const Producto = () => {
                 onFilterTextChange={setFilterText}
                 onInStockOnlyChange={setInStockOnly} />
             <ProductTable
-                products={PRODUCTS}
+                products={products}
                 filterText={filterText}
                 inStockOnly={inStockOnly} />
         </div>
