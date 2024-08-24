@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import useForm from "../../hooks/useForm";
-import { saveFormData } from "../../redux/form/formActions";
+import { saveFormData, loginFormData, logOutFormData } from "../../redux/form/formActions";
 import { motion } from 'framer-motion';
 import ModalInfo from "../../components/ModalInfo";
 import { useState } from "react";
@@ -8,6 +8,10 @@ import { useState } from "react";
 const LoginForm = () => {
     const [values, handleChange] = useForm({ username: '', email: '',password: '' });
     const [showModalinfo, setShowModalInfo] = useState(false);
+    const [msgModalInfo, setMsgModalInfo] = useState('');
+    const [btnPassVisible, setBtnPassVisible] = useState({ typeInput: 'password', textButton: 'Show' });
+    const [btnModalExitVisible, setBtnModalExitVisible] = useState(false);
+
     const form = useSelector(state => state.form);
     const dispatch = useDispatch();
 
@@ -15,13 +19,49 @@ const LoginForm = () => {
         event.preventDefault();
         console.log(values);
         dispatch(saveFormData(values));
+        setMsgModalInfo(values.username + " Bienvenid@ al Módulo 7 ++ ");
         setShowModalInfo(true);
     }
 
     const hideModalInfo = () => {
+        setMsgModalInfo("");
+        setBtnModalExitVisible(false);
         setShowModalInfo(false);
     };
+
+    const logOutModalInfo = () => {
+        setMsgModalInfo("");
+        if(btnModalExitVisible){
+            dispatch(logOutFormData());
+        }
+        setBtnModalExitVisible(false);
+        setShowModalInfo(false);
+    };
+
+
     const modalInfoShow = () => {
+        setMsgModalInfo(values.username + " Bienvenid@ al Módulo 7");
+        setShowModalInfo(true);
+    };
+    const loginDataform = () => {
+        dispatch(loginFormData(values));
+        if (values.password === form.passCorrect){
+            setMsgModalInfo(values.username + " Bienvenid@ al Módulo 7");
+        }else{
+            setMsgModalInfo("Password incorrecto");
+        }
+        setShowModalInfo(true);
+    };
+    const changeTypeInputPass = () => {
+        if(btnPassVisible.textButton === 'Show'){
+            setBtnPassVisible({typeInput: 'text', textButton: 'Hide'});
+        }else{
+            setBtnPassVisible({typeInput: 'password', textButton: 'Show'});
+        }
+    };
+    const modalLogOutShow = () => {
+        setMsgModalInfo("¿Estás seguro de que quieres cerrar sesión?");
+        setBtnModalExitVisible(true);
         setShowModalInfo(true);
     };
 
@@ -33,8 +73,10 @@ const LoginForm = () => {
         >
             <ModalInfo 
                     visible={showModalinfo}
-                    message= {values.username + " Bienvenid@ al Módulo 7"}
+                    message= {msgModalInfo}
                     onClose={hideModalInfo}
+                    onLogOut = {logOutModalInfo}
+                    btnExitVisible= {btnModalExitVisible}
                 />
             <div className="container">
                 <form onSubmit={handleSubmit}>
@@ -63,16 +105,19 @@ const LoginForm = () => {
                     <div>
                         <label htmlFor="password">Contraseña</label>
                         <input 
-                            type="password" 
+                            type={btnPassVisible.typeInput}
                             id="password" 
                             name="password"
                             value={values.password}
                             onChange={handleChange}
                         />
+                        <button type="button" onClick={changeTypeInputPass}>{btnPassVisible.textButton}</button>
                     </div>
                     <div className="button-container">
                         <button type="submit">Submit</button>
-                        <button type="submit" onClick={modalInfoShow}>Mostrar Modal</button>
+                        <a onClick={modalLogOutShow}>Logout</a>
+                        <button type="button" onClick={loginDataform}>Login</button>
+                        <button type="button" onClick={modalInfoShow}>Mostrar Modal</button>
                     </div>
                 </form>
             </div>

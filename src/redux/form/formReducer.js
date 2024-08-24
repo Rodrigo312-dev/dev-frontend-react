@@ -1,4 +1,4 @@
-import { SET_FORM_DATA } from './formTypes';
+import { SET_FORM_DATA, LOGIN_FORM_DATA, CLEAN_FORM_DATA } from './formTypes';
 
 const initialState = {
     formData: {
@@ -6,6 +6,7 @@ const initialState = {
         email: '',
         password: '',
     },
+    passCorrect: 'mod7ReactUSIP',
 };
 
 const formReducer = (state = initialState, action) => {
@@ -17,6 +18,29 @@ const formReducer = (state = initialState, action) => {
                     ...state.formData,
                     ...action.payload,
                 },
+            }
+        }
+        case LOGIN_FORM_DATA : {
+            if (state.passCorrect === action.payload.password)
+            {
+                return {
+                    ...state,
+                    formData:{
+                        ...state.formData,
+                        ...action.payload,
+                    },
+                }
+            }
+            return state;
+        }
+        case CLEAN_FORM_DATA: {
+            return {
+                ...state,
+                formData: {
+                    username: '',
+                    email: '',
+                    password: '',
+                },    
             }
         }
         default:

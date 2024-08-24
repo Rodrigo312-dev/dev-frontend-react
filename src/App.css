@@ -65,6 +65,12 @@ a:hover {
   color: #ffcc00;
 }
 
+.navbar-right {
+  margin-left: auto; 
+  color: white;
+  padding-right: 16px; 
+}
+
 /* STYLES FORMS */ 
 .container {
   display: flex;

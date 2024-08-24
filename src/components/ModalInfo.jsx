@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 
-const ModalInfo = ({ visible, message, onClose }) => {
+
+const ModalInfo = ({ visible, message, onClose, onLogOut, btnExitVisible }) => {
+    
     if (!visible){
         return null;
     }
@@ -14,6 +16,12 @@ const ModalInfo = ({ visible, message, onClose }) => {
             >
             <div>
                 <p>{ message }</p>
+                {btnExitVisible && (
+                    <button type="button" onClick={onLogOut}>
+                        Presionar para salir!!!
+                    </button>
+                )}
+                
             </div>
             <button 
                 className="close-btn-success" 
