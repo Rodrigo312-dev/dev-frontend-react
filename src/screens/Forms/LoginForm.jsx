@@ -6,7 +6,7 @@ import ModalInfo from "../../components/ModalInfo";
 import { useState } from "react";
 
 const LoginForm = () => {
-    const [values, handleChange] = useForm({ username: '', email: '',password: '' });
+    const [values, handleChange, resetForm] = useForm({ username: '', email: '',password: '' });
     const [showModalinfo, setShowModalInfo] = useState(false);
     const [msgModalInfo, setMsgModalInfo] = useState('');
     const [btnPassVisible, setBtnPassVisible] = useState({ typeInput: 'password', textButton: 'Show' });
@@ -17,9 +17,18 @@ const LoginForm = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        /*
         console.log(values);
         dispatch(saveFormData(values));
         setMsgModalInfo(values.username + " Bienvenid@ al Módulo 7 ++ ");
+        setShowModalInfo(true);
+        */
+        dispatch(loginFormData(values));
+        if (values.password === form.passCorrect){
+            setMsgModalInfo(values.username + " Bienvenid@ al Módulo 7");
+        }else{
+            setMsgModalInfo("Password incorrecto");
+        }
         setShowModalInfo(true);
     }
 
@@ -36,6 +45,7 @@ const LoginForm = () => {
         }
         setBtnModalExitVisible(false);
         setShowModalInfo(false);
+        resetForm();
     };
 
 
@@ -90,6 +100,7 @@ const LoginForm = () => {
                             name="username"
                             value={values.username}
                             onChange={handleChange}
+                            required
                         />
                     </div>
                     <div>
@@ -100,6 +111,7 @@ const LoginForm = () => {
                             name="email"
                             value={values.email}
                             onChange={handleChange}
+                            required
                         />
                     </div>
                     <div>
@@ -110,14 +122,15 @@ const LoginForm = () => {
                             name="password"
                             value={values.password}
                             onChange={handleChange}
+                            required
                         />
                         <button type="button" onClick={changeTypeInputPass}>{btnPassVisible.textButton}</button>
                     </div>
                     <div className="button-container">
-                        <button type="submit">Submit</button>
+                        <button type="submit" >Submit</button> 
+                        {/* <button type="button" onClick={loginDataform}>Login</button> */}
                         <a onClick={modalLogOutShow}>Logout</a>
-                        <button type="button" onClick={loginDataform}>Login</button>
-                        <button type="button" onClick={modalInfoShow}>Mostrar Modal</button>
+                        {/* <button type="button" onClick={modalInfoShow}>Mostrar Modal</button> */}
                     </div>
                 </form>
             </div>
